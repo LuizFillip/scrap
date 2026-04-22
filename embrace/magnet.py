@@ -1,5 +1,5 @@
 import datetime as dt
-import Webscrape as wb
+import scrap as wb
 import base as b 
                 
                 
@@ -65,20 +65,35 @@ def main():
     
 # main()
 
-def dowload_all_years(site = 'eusebio'):
+        
+# dowload_all_years(site = 'eusebio')
 
-    for year in range(2013, 2024):
-        ref = dt.datetime(year, 12, 13)
-        
-        
-        save_in = f'E:\\database\\magnet\\{site}\\'
-        
-        b.make_dir(save_in)
-        
-        download_magnetometer(
+def download_data():
+    site = 'eusebio'
+    site_code = codes[site]
+    
+    save_in = f'magnet/data/2025/{site_code.upper()}'
+    
+    ref  = dt.datetime(2025, 1, 1)
+    url = wb.embrace_url(
             ref, 
-            save_in = save_in, 
-            site = site
+            site = site, 
+            inst = "magnetometer"
             )
+    
+     
+    b.make_dir(save_in)
+    
+    code = codes[site]
+    
+    out = []
+    for link in wb.request(url):    
         
-dowload_all_years(site = 'eusebio')
+        if code in link:
+          
+            print('Downloading', link)
+            wb.download(
+                url, 
+                link, 
+                save_in
+                )
