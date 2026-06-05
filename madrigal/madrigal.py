@@ -105,31 +105,39 @@ def MadrigalDownload(url, save_in, month = 9):
     for link in parser:
         href = link['href']
         name = link.text.strip()
-        try:
-            dn = cachoeira_file(name)
-            
-            if dn.month == month:
-            
-                path_to_save = os.path.join(
-                    save_in, 
-                    name
-                    )
-                
-                print('downloding...', name)
-                download(href, path_to_save)
-        except:
-            continue
-            
     
-# def main():
-  
+        if ('minime' in name) or ('bfp' in name):
         
-year = 2024
-save_in = "database/FabryPerot/cj/"
-url = build_url(
-    kinst = 5362, 
-    year = year, 
-    kindat = 7101
-    )
+            path_to_save = os.path.join(
+                save_in, 
+                name
+                )
+        
+            print('downlading...', name)
+            download(href, path_to_save)
+        
+    return None 
+    
+def main():
 
-MadrigalDownload(url, save_in)
+    name = 'cachoeira'
+    kinst = {
+        'cariri': [5545, 7100], 
+             'cajazeiras': [5546, 7100], 
+             'cachoeira': [5362, 7100]
+             }
+    nums = kinst[name]
+    
+    # for year in range(2009, 2015):
+    year = 2025
+    save_in = f"database/FabryPerot/{name[:3]}/"
+    url = build_url(
+        kinst = nums[0], 
+        year = year, 
+        kindat = nums[1]
+        )
+    
+    MadrigalDownload(url, save_in)
+        
+        
+# main()

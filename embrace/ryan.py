@@ -65,33 +65,65 @@ dates = ['2024-03-21', '2024-03-24', '2024-04-04',
 '2024-09-12', '2024-10-07']
 
 
-
-year = 2024
-dates = pd.date_range(  f'{year}-01-01', 
-                      f'{year}-12-31', 
-                      freq = '1D')
-
-
-
-# for ref in dates:
-
-save_in = Path('D:\\ionogram\\miss\\2024\\')
- 
- 
-# out = []
-for ref in dates:
-    ref = pd.Timestamp(ref)
-    
-    start = ref + dt.timedelta(hours = 20)
-    end = start + dt.timedelta(hours = 3)
-    
-    
-    for dn in pd.date_range( start, end, freq = '10min'):
+def download_sunset():
+    year = 2012
+    dates = pd.date_range( 
+        f'{year}-01-01', 
+        f'{year}-12-31', 
+        freq = '1D'
+        )
      
-        check_sup =  save_in  / dn2fn(dn, ext = 'SAO')
+    save_in = Path(f'D:\\ionogram\\sunset\\{year}\\')
+     
+     
+    # out = []
+    for ref in dates:
+        ref = pd.Timestamp(ref)
         
-        # if not check_sup.exists():
-            # print(ref)
+        start = ref + dt.timedelta(hours = 20)
+        end = start + dt.timedelta(hours = 3)
+        
+        
+        for dn in pd.date_range( start, end, freq = '10min'):
+         
+            check_sup =  save_in  / dn2fn(dn, ext = 'SAO')
+            
+            # if not check_sup.exists():
+                # print(ref)
+            print('downloading', dn)
+            sp.download_in_day(
+                    dn, 
+                    site = 'sao_luis', 
+                    ext = ('RSF', 'SAO'), 
+                    save_in = save_in  
+                    )
+        
+
+# year = 2017
+# dates = pd.date_range( 
+#     f'{year}-01-01', 
+#     f'{year}-01-09', 
+#     freq = '10min'
+#     )
+
+
+save_in = Path('D:\\ionogram\\case2017\\')
+ 
+ 
+dates = pd.to_datetime(
+    ['2017-01-13T00:00:00.000000000', 
+     '2017-01-14T00:00:00.000000000',
+     '2017-01-16T00:00:00.000000000', 
+     '2017-01-17T00:00:00.000000000',
+     '2017-01-24T00:00:00.000000000'])
+
+for start in dates:
+    delta = dt.timedelta(hours = 23, minutes = 50)
+    for dn in pd.date_range( 
+            start, 
+            start + delta, 
+            freq = '10min'):
+      
         print('downloading', dn)
         sp.download_in_day(
                 dn, 

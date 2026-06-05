@@ -65,4 +65,12 @@ def request(url, verify = False) -> list:
 
     return [link['href'] for link in parser]
 
-
+def download_gold():
+    url = 'https://spdf.gsfc.nasa.gov/pub/data/gold/level2/on2/2025/'
+    
+    save_in = 'D:\\database\\gold\\'
+    
+    for href in request(url):
+        if 'nc' in href:
+            print('downloading', href)
+            download(url, href, save_in)
