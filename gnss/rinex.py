@@ -184,7 +184,7 @@ def download_rinex_daily(
             end_doy=end_doy
             ):
         path_to_save = f"{path.rinex}{doy:03d}"
-        stations = miss_receivers(year, doy)
+        # stations = miss_receivers(year, doy)
 
         download_routine(year, doy, path_to_save, stations)
         
@@ -194,12 +194,21 @@ def main_onew():
     year = 2024
     path = gs.paths(year, root= 'F:\\')
     path_to_save = f"{path.rinex}{doy:03d}"
-    stations = filter_stations_by_latitude(latitude=-15)
-    download_routine(year, doy, path_to_save, stations)
+    
+    
+# year = 2026
+# stations = filter_stations_by_latitude(latitude=-15)
+# # download_routine(year, doy, path_to_save, stations)
+
+# download_rinex_daily(
+#         year, 
+#         stations, 
+#         root='E:\\', 
+#         resume=True, 
+#         start_doy=90, 
+#         end_doy=None
+#         )
 
 
-
-
-# stations = ['pbcg', 'alar', 'pepe']
-
-# download_rinex_yearly(2013, stations, root="D:\\")
+# # stations
+ 
