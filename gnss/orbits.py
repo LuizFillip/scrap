@@ -203,7 +203,57 @@ def download_orbits_daily(
 
 #         resume=True, verbose=True)
 
-def show_weak_():
-    dn = dt.datetime(2026, 1, 1)
-    week, dow = gs.dn2gpsweek(dn)
-    week, dow
+# def show_weak_():
+#     dn = dt.datetime(2026, 1, 1)
+#     week, dow = gs.dn2gpsweek(dn)
+#     week, dow
+
+dn = dt.datetime(2026, 1, 1)
+root="E:\\"
+const="igv"
+network="garner"
+path_year = ensure_orbit_dirs(dn.year, root=root, const=const)
+out_dir = path_year.orbit(const=const)
+
+
+fn, url, post = orbit_url(
+    dn, 
+    network = network, 
+    const = const 
+    )
+
+# nome final esperado (após unzip)
+expected = (igv_sp3_name(fn) if fn.endswith(".Z") 
+            else fn.replace(".gz", ""))
+expected_path = os.path.join(out_dir, expected)
+
+# if os.path.exists(expected_path):
+#     continue
+ 
+# # baixa: mantém seu padrão de varrer request(url)
+found = False
+for href in wb.request(url):
+    if fn in href:
+        found = True
+        # if verbose:
+        #     print("[download_orbit]", dn.date(), href)
+
+        downloaded = wb.download(url, href, out_dir)
+
+        # descompactação
+        try:
+            if downloaded.endswith(".Z"):
+                wb.unzip_Z(downloaded)
+            elif downloaded.endswith(".gz"):
+                wb.unzip_gz(downloaded)
+        except:
+            continue
+
+        break
+
+# if verbose and not found:
+#     print("[missing]", dn.date(), fn)
+
+# pós-processamento (renomear igv)
+if post == "rename_igv":
+    rename_igv_folder(out_dir)
