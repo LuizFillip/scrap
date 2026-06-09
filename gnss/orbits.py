@@ -197,3 +197,13 @@ def download_orbits_daily(
     return None
 
  
+# download_orbits_daily(
+#         year=2026, 
+#         root="E:\\", 
+
+#         resume=True, verbose=True)
+
+def show_weak_():
+    dn = dt.datetime(2026, 1, 1)
+    week, dow = gs.dn2gpsweek(dn)
+    week, dow

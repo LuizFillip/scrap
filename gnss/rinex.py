@@ -6,7 +6,8 @@ from tqdm import tqdm
 import calendar
 import pandas as pd
 import GEO as gg 
-
+from pathlib import Path 
+ 
 PATH_CHILE = 'D:\\database\\GNSS\\rinex\\chile\\'
 
 networks = {
@@ -196,19 +197,52 @@ def main_onew():
     path_to_save = f"{path.rinex}{doy:03d}"
     
     
-# year = 2026
-# stations = filter_stations_by_latitude(latitude=-15)
-# # download_routine(year, doy, path_to_save, stations)
-
-# download_rinex_daily(
-#         year, 
-#         stations, 
-#         root='E:\\', 
-#         resume=True, 
-#         start_doy=90, 
-#         end_doy=None
-#         )
-
-
-# # stations
+year = 2026
  
+
+
+
+def unzip_crx(path_root):
+    for path_in in tqdm(list(path_root.iterdir())):
+    
+        if not path_in.is_file():
+            continue
+    
+        # Caso 1: arquivo ZIP
+        if path_in.suffix.lower() == '.zip':
+            extracted = wb.unzip_zip(path_in)
+    
+            if extracted is None:
+                continue
+    
+            path_d = Path(extracted)
+    
+            # remove o zip após extrair
+            path_in.unlink()
+    
+            # converte se o extraído for .d / .yy d
+            if path_d.name.lower().endswith('d'):
+                wb.crx2rnx(path_d)
+                path_d.unlink()
+    
+        # Caso 2: arquivo .d já existente
+        elif path_in.name.lower().endswith('d'):
+            wb.crx2rnx(path_in)
+            path_in.unlink()
+            
+    return None 
+def main():
+    doy = 2
+    
+    path = gs.paths(year, root='E:\\')
+    
+    for doy in iter_doys(
+            year, 
+            start_doy=3, 
+            end_doy=160
+            ):
+        
+        path_root = Path(f"{path.rinex}{doy:03d}")
+    
+    
+        unzip_crx(path_root)

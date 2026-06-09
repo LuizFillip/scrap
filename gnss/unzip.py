@@ -1,12 +1,11 @@
 
 from __future__ import annotations
-
 import gzip
 import os
 import shutil
 import zipfile
 from pathlib import Path
-from typing import Iterable, Optional, Sequence, Union
+from typing import  Optional, Sequence, Union
 
 from unlzw3 import unlzw
 
@@ -100,8 +99,12 @@ def unzip_zip(
 
     with zipfile.ZipFile(zpath, "r") as zf:
         # tenta achar candidatos
-        members = [n for n in zf.namelist() if 
-                   any(n.endswith(f".{ext}") for ext in extract_ext)]
+        import re
+
+        members = [
+            n for n in zf.namelist()
+            if re.search(r"\.\d{2}[do]$", n.lower())
+        ]
         if not members:
             return None
 
