@@ -99,36 +99,38 @@ def download_sunset():
                     )
         
 
-# year = 2017
-# dates = pd.date_range( 
-#     f'{year}-01-01', 
-#     f'{year}-01-09', 
-#     freq = '10min'
-#     )
 
 
-save_in = Path('D:\\ionogram\\case2017\\')
+#2021-10-7/8 e dia 2022-09-25/26
+
+save_in = Path(r'E:\database\belem\\')
  
- 
-dates = pd.to_datetime(
-    ['2017-01-13T00:00:00.000000000', 
-     '2017-01-14T00:00:00.000000000',
-     '2017-01-16T00:00:00.000000000', 
-     '2017-01-17T00:00:00.000000000',
-     '2017-01-24T00:00:00.000000000'])
+#2021-10-7/8 e dia 2022-09-25/26
 
+
+year = 2025
+dates = pd.date_range( 
+    f'{year}-01-01 20:00', 
+    f'{year}-05-01 20:00', 
+    freq = '1D'
+    )
 for start in dates:
-    delta = dt.timedelta(hours = 23, minutes = 50)
+    delta = dt.timedelta(hours = 3)
     for dn in pd.date_range( 
             start, 
             start + delta, 
-            freq = '10min'):
+            freq = '10min'
+            ):
+        
+        check_sup =  save_in  / dn2fn(dn, ext = 'SAO')
+        
+        if not check_sup.exists():
       
-        print('downloading', dn)
-        sp.download_in_day(
-                dn, 
-                site = 'sao_luis', 
-                ext = ('RSF', 'SAO'), 
-                save_in = save_in  
-                )
+            print('downloading', dn)
+            sp.download_in_day(
+                    dn, 
+                    site = 'belem', 
+                    ext = ('RSF', 'SAO'), 
+                    save_in = save_in  
+                    )
     

@@ -214,5 +214,5 @@ def dn2fn(dn, ext = 'SAO'):
     
     return dn.strftime(fmt)
 
-    
- 
+# periods = pd.date_range('2025-01-01', '2025-05-01')   
+# download_ionograms(periods, site = 'belem', ext='RSF')
